@@ -5,13 +5,17 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite dev"
+    "dev": "vite",
+    "preview": "vite preview"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "vite": "^6.2.3"
+    "vite": "^6.2.3",
+    "vite-plugin-minify": "^2.1.0"
+  },
+  "dependencies": {
   }
 }

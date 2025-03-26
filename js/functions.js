@@ -18,10 +18,10 @@ const email = {
 
 export function listeners() {
   // Assign events
-  inputEmail.addEventListener("input", validate);
-  inputMatter.addEventListener("input", validate);
-  inputMessage.addEventListener("input", validate);
-  inputCC.addEventListener("input", validate);
+  inputEmail.addEventListener("blur", validate);
+  inputMatter.addEventListener("blur", validate);
+  inputMessage.addEventListener("blur", validate);
+  inputCC.addEventListener("blur", validate);
   resetBtn.addEventListener("click", function (e) {
     e.preventDefault();
     resetForm();

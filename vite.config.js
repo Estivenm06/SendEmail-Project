@@ -2,7 +2,7 @@ import {ViteMinifyPlugin} from "vite-plugin-minify"
 import { defineConfig } from "vite"
 
 export default defineConfig({
-    base: '/',
+    base: '/SendEmail-Project/',
     plugins: [
         ViteMinifyPlugin({})
     ],

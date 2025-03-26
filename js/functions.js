@@ -13,7 +13,6 @@ const email = {
   email: "",
   asunto: "",
   mensaje: "",
-  cc: "",
 };
 
 export function listeners() {
@@ -39,8 +38,7 @@ export function sendEmail(e) {
     spinner.classList.add("hidden");
     spinner.classList.remove("flex");
     resetForm();
-
-    form.appendChild(alert("Email was sent correctly.", "success"));
+    alert("El email fue enviado correctamente.", "success", form);
 
     setTimeout(() => {
       form.lastChild.remove();
@@ -52,43 +50,48 @@ export function sendEmail(e) {
 export function validate(event) {
   const reference = event.target.parentElement;
   if (event.target.id !== "cc" && event.target.value === "") {
-    showAlertError(`El campo ${event.target.id} es obligatorio.`, reference);
+    alert(`El campo ${event.target.id} es obligatorio.`, "error", reference);
     email[event.target.name] = "";
-    checkEmail();
+    checkEmailForSubmit();
     return;
   }
+
   if (
-    (event.target.id === "email" && !validateEmail(event.target.value)) ||
-    (event.target.id === "cc" &&
-      event.target.value.length >= 1 &&
-      !validateEmail(event.target.value))
+    event.target.id === "cc" &&
+    event.target.value.length >= 1 &&
+    !validateEmail(event.target.value)
   ) {
-    showAlertError(`El email ${event.target.value} no es valido.`, reference);
+    console.log("CC");
+    alert(`El email ${event.target.value} no es valido.`, "error", reference);
     email[event.target.name] = "";
-    checkEmail();
+    checkEmailForSubmit();
+    return;
+  } else if (event.target.id === "cc" && event.target.value.length === 0) {
+    delete email["cc"];
+  } else {
+    email[event.target.name] = event.target.value.trim().toLowerCase();
+  }
+
+  if (event.target.id === "email" && !validateEmail(event.target.value)) {
+    alert(`El email ${event.target.value} no es valido.`, "error", reference);
+    email[event.target.name] = "";
+    checkEmailForSubmit();
     return;
   }
   clearAlert(reference);
   // Assign values
-  email[event.target.name] = event.target.value.trim().toLowerCase();
+  if (event.target.id !== "cc") {
+    email[event.target.name] = event.target.value.trim().toLowerCase();
+  }
   // Check email object
-  checkEmail();
+  checkEmailForSubmit();
 }
 
 // Alerts
-export function showAlertError(message, reference) {
+export function alert(message, type, reference) {
+  // Check if already there are an alert and then delete it
   clearAlert(reference);
-  // Inject error to the form of HTML
-  reference.appendChild(alert(message, "error"));
-}
-export function clearAlert(reference) {
-  // Checking if already there are an alert
-  const alert = reference.querySelector(".bg-red-600");
-  if (alert) {
-    alert.remove();
-  }
-}
-export function alert(message, type) {
+
   const alertElement = document.createElement("P");
   if (type === "error") {
     alertElement.classList.add(
@@ -114,10 +117,17 @@ export function alert(message, type) {
     );
   }
   alertElement.textContent = message;
-  return alertElement;
+  reference.appendChild(alertElement);
+}
+export function clearAlert(reference) {
+  // Checking if already there are an alert
+  const alert = reference.querySelector(".bg-red-600");
+  if (alert) {
+    alert.remove();
+  }
 }
 
-// Validation
+// Validation Email
 export function validateEmail(email) {
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const result = regex.test(email);
@@ -125,7 +135,7 @@ export function validateEmail(email) {
 }
 
 // Check Object
-export function checkEmail() {
+export function checkEmailForSubmit() {
   if (Object.values(email).includes("")) {
     submitBtn.classList.add("opacity-50");
     submitBtn.disabled = true;
@@ -141,7 +151,14 @@ export function resetForm() {
   email.email = "";
   email.asunto = "";
   email.mensaje = "";
+  email.cc = "";
 
   form.reset();
-  checkEmail();
+  checkEmailForSubmit();
+  removeAlerts();
+}
+
+function removeAlerts() {
+  const alerts = document.querySelectorAll(".bg-red-600");
+  alerts.forEach((alert) => alert.remove());
 }

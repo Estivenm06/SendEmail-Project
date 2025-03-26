@@ -32,10 +32,10 @@ export function sendEmail(e) {
   e.preventDefault();
 
   spinner.classList.add("flex");
-  spinner.classList.remove("hidden");
+  spinner.classList.remove("opacity-0");
 
   setTimeout(() => {
-    spinner.classList.add("hidden");
+    spinner.classList.add("opacity-0");
     spinner.classList.remove("flex");
     resetForm();
     alert("El email fue enviado correctamente.", "success", form);
@@ -100,7 +100,7 @@ export function alert(message, type, reference) {
       "p-2",
       "bg-red-600",
       "text-center",
-      "text-white"
+      "text-white",
     );
   } else {
     alertElement.classList.add(
@@ -113,7 +113,7 @@ export function alert(message, type, reference) {
       "text-sm",
       "uppercase",
       "mt-10",
-      "font-bold"
+      "font-bold",
     );
   }
   alertElement.textContent = message;

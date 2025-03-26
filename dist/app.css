@@ -720,6 +720,8 @@ video {
 
 .flex {
   display: flex;
+  transition: all;
+  transition-duration: 300ms;
 }
 
 .hidden {
@@ -889,6 +891,13 @@ video {
 
 .opacity-50 {
   opacity: 0.5;
+}
+
+.opacity-0 {
+  opacity: 0;
+  position: absolute;
+  transition: all;
+  transition-duration: 0ms;
 }
 
 .shadow-xl {
